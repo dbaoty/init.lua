@@ -1,3 +1,4 @@
+
 -- lsp.lua
 
 return {
@@ -20,26 +21,26 @@ return {
 
   {
     "williamboman/mason-lspconfig.nvim",
+
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "clangd",
+        },
+      })
+    end,
   },
 
   {
-    "neovim/nvim-lspconfig",
+    "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" },
 
     config = function()
-      -- local lspconfig = require("lspconfig")
+      local lspconfig = require("lspconfig")
 
       -- servers setup
-      require("lspconfig").lua_ls.setup({
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
-          },
-        },
-      })
-
-      require("lspconfig").clangd.setup({})
+      lspconfig.lua_ls.setup {}
+      lspconfig.clangd.setup {}
 
       -- global mappings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
@@ -85,11 +86,12 @@ return {
       local dap = require("dap")
     end,
   },
+
   {
-    "nvimtools/none-ls.nvim",
+    "nvimtools/none-ls.nvim", event = "BufReadPre",
     dependencies = { "nvim-lua/plenary.nvim" },
 
-    init = function()
+    config = function()
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {

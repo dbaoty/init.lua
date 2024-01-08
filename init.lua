@@ -1,6 +1,5 @@
 
 -- init.lua
 
-require("options")
-require("plugin")
-
+require("config.options")
+require("config.plugin")
