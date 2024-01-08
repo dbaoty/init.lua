@@ -1,4 +1,3 @@
-
 -- lsp.lua
 
 return {
@@ -12,29 +11,35 @@ return {
           icons = {
             package_installed = "✓",
             package_pending = "➜",
-            package_uninstalled = "✗"
+            package_uninstalled = "✗",
           },
         },
       })
     end,
   },
+
   {
     "williamboman/mason-lspconfig.nvim",
-
-    config = function()
-      require("mason-lspconfig").setup()
-      require("mason-lspconfig").setup_handlers({
-        ["lua_ls"] = function ()
-          require("lua_ls").setup()
-        end,
-      })
-    end,
   },
+
   {
     "neovim/nvim-lspconfig",
 
     config = function()
-      local lspconfig = require("lspconfig")
+      -- local lspconfig = require("lspconfig")
+
+      -- servers setup
+      require("lspconfig").lua_ls.setup({
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      })
+
+      require("lspconfig").clangd.setup({})
 
       -- global mappings
       vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
@@ -65,12 +70,13 @@ return {
           vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
           vim.keymap.set("n", "<space>f", function()
-            vim.lsp.buf.format { async = true }
+            vim.lsp.buf.format({ async = true })
           end, opts)
         end,
       })
     end,
   },
+
   {
     -- TODO: make this work
     "mfussenegger/nvim-dap",
