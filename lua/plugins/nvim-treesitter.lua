@@ -11,7 +11,12 @@ return {
   },
 
   config = function()
-    require("nvim-treesitter.configs").setup({ -- enable syntax highlighting
+    require("nvim-treesitter.configs").setup({
+      ensure_installed = {
+          "lua", "c", "cpp", "bash", "ocaml", "python", "markdown",
+          "markdown_inline",
+      },
+
       highlight = {
         enable = true,
       },
@@ -20,10 +25,6 @@ return {
 
       autotag = {
         enable = true,
-      },
-
-      ensure_installed = {
-          "lua", "c", "cpp", "bash", "ocaml", "python",
       },
 
       incremental_selection = {
